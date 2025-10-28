@@ -3,6 +3,7 @@ import random
 import re
 from collections import defaultdict
 from copy import deepcopy
+from pathlib import Path
 
 import bddl
 import networkx as nx
@@ -28,6 +29,30 @@ from omnigibson.utils.asset_utils import (
 from omnigibson.utils.constants import PrimType
 from omnigibson.utils.python_utils import Wrapper
 from omnigibson.utils.ui_utils import create_module_logger
+
+
+def get_bddl_package_dir() -> Path:
+    """Locate the installed BDDL package directory, even when loaded as a namespace."""
+
+    file_attr = getattr(bddl, "__file__", None)
+    if file_attr:
+        return Path(file_attr).parent
+
+    for candidate in getattr(bddl, "__path__", []):
+        candidate_path = Path(candidate)
+        if (candidate_path / "__init__.py").exists():
+            return candidate_path
+        nested = candidate_path / "bddl"
+        if (nested / "__init__.py").exists():
+            return nested
+
+    try:
+        from importlib import resources
+
+        with resources.as_file(resources.files(bddl)) as pkg_path:
+            return Path(pkg_path)
+    except Exception as exc:  # pragma: no cover - defensive fallback
+        raise RuntimeError("Unable to locate BDDL package directory") from exc
 
 # Create module logger
 log = create_module_logger(module_name=__name__)
@@ -264,7 +289,8 @@ KINEMATIC_STATES_BDDL = frozenset([state.__name__.lower() for state in _KINEMATI
 
 # BEHAVIOR-related
 OBJECT_TAXONOMY = ObjectTaxonomy()
-BEHAVIOR_ACTIVITIES = sorted(os.listdir(os.path.join(os.path.dirname(bddl.__file__), "activity_definitions")))
+BDDL_PACKAGE_DIR = get_bddl_package_dir()
+BEHAVIOR_ACTIVITIES = sorted(os.listdir(BDDL_PACKAGE_DIR / "activity_definitions"))
 
 
 def _populate_input_output_objects_systems(og_recipe, input_synsets, output_synsets):

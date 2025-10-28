@@ -1,9 +1,9 @@
 from pathlib import Path
 
-import bddl
 import git
 
 import omnigibson as og
+from omnigibson.utils.bddl_utils import BDDL_PACKAGE_DIR
 
 
 def git_info(directory):
@@ -24,5 +24,5 @@ def git_info(directory):
 def project_git_info():
     return {
         "OmniGibson": git_info(Path(og.root_path).parent),
-        "bddl": git_info(Path(bddl.__file__).parent.parent),
+        "bddl": git_info(BDDL_PACKAGE_DIR.parent),
     }

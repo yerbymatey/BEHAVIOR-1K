@@ -397,9 +397,11 @@ def get_bddl_git_hash():
     Returns:
         str: bddl asset commit hash
     """
+    from omnigibson.utils.bddl_utils import get_bddl_package_dir
+
     try:
         git_hash = subprocess.check_output(
-            ["git", "-C", Path(bddl.__file__).parent, "rev-parse", "HEAD"], shell=False, stderr=subprocess.DEVNULL
+            ["git", "-C", get_bddl_package_dir(), "rev-parse", "HEAD"], shell=False, stderr=subprocess.DEVNULL
         )
         return git_hash.decode("utf-8").strip()
     except subprocess.CalledProcessError:

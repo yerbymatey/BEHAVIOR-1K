@@ -33,7 +33,11 @@ from omnigibson.object_states import (
 )
 from omnigibson.objects.dataset_object import DatasetObject
 from omnigibson.utils.asset_utils import get_all_object_category_models
-from omnigibson.utils.bddl_utils import translate_bddl_recipe_to_og_recipe, translate_bddl_washer_rule_to_og_washer_rule
+from omnigibson.utils.bddl_utils import (
+    BDDL_PACKAGE_DIR,
+    translate_bddl_recipe_to_og_recipe,
+    translate_bddl_washer_rule_to_og_washer_rule,
+)
 from omnigibson.utils.python_utils import Registerable, classproperty, torch_delete
 from omnigibson.utils.registry_utils import Registry
 from omnigibson.utils.ui_utils import create_module_logger
@@ -2604,7 +2608,11 @@ class CookingSystemRule(CookingRule):
 def import_recipes():
     for json_file, rule_names in _JSON_FILES_TO_RULES.items():
         recipe_fpath = os.path.join(
-            os.path.dirname(bddl.__file__), "generated_data", "transition_map", "tm_jsons", json_file
+            BDDL_PACKAGE_DIR,
+            "generated_data",
+            "transition_map",
+            "tm_jsons",
+            json_file,
         )
         if not os.path.exists(recipe_fpath):
             log.warning(f"Cannot find recipe file at {recipe_fpath}. Skipping importing recipes.")
