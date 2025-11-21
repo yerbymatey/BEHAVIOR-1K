@@ -151,7 +151,6 @@ class WebUIExtension(omni.ext.IExt):
                 )
         
         # Register web UI routes
-        from fastapi import APIRouter
         web_router = APIRouter(include_in_schema=False)
         
         @web_router.get("/")
