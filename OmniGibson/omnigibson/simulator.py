@@ -265,10 +265,10 @@ def _launch_app():
             lazy.isaacsim.core.utils.extension.enable_extension("omni.kit.livestream.native")
             print(f"Now streaming on {ip} via Omniverse Streaming Client")
 
-        elif gm.REMOTE_STREAMING == "webrtc":            
+        elif gm.REMOTE_STREAMING == "webrtc":
             # Set WebRTC port
             app.set_setting("/app/livestream/port", gm.WEBRTC_PORT)
-            
+
             # Enable custom OmniGibson remote viewer extensions
             custom_exts = [
                 "omnigibson.remote_viewer.setup",
@@ -280,7 +280,7 @@ def _launch_app():
         elif gm.REMOTE_STREAMING == "websocket":
             # Set WebSocket streaming port (TCP-only, no UDP)
             app.set_setting("/app/livestream/port", gm.WEBRTC_PORT)  # Reuse same port
-            
+
             # Enable custom OmniGibson remote viewer extensions + websocket streaming
             custom_exts = [
                 "omnigibson.remote_viewer.setup",
@@ -1875,4 +1875,3 @@ def _launch_simulator(*args, **kwargs):
         log.info(f"{'-' * 10} Welcome to {logo_small()}! {'-' * 10}")
 
     return og.sim
-

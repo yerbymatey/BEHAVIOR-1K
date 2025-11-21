@@ -42,5 +42,3 @@ class SetupExtension(omni.ext.IExt):
             viewport_api = get_viewport_from_window_name("Viewport")
             if viewport_api and hasattr(viewport_api, "fill_frame"):
                 viewport_api.fill_frame = True
-
-
